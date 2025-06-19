@@ -1,14 +1,30 @@
-from fastapi import FastAPI,Request
+from fastapi import FastAPI,HTTPException
 from pydantic import BaseModel
-import yfinance
+import yfinance as yf
 class StockDetails(BaseModel):
-    symbol: str
-    name: str
-    sector: str
+    symbol: str | None = None
+    name: str | None=None
+    sector: str |None = None
+    current_price: float |None =None
+
+
+app = FastAPI()
 
 
 @app.get("/stock/{symbol}")
 async def get_stock(symbol: str,):
-    data=yfinance.ticker(symbol)
-    stockdetails = StockDetails(symbol=symbol, name=data.name, sector=data.sector)
-    return stockdetails.model_dump()
+    symbol = symbol.upper()
+    try :
+        ticker=yf.Ticker(symbol)
+        info = ticker.info
+        if info is None:
+            raise HTTPException(status_code=404,detail="Stock not found ")
+        stockdetail=StockDetails(
+            symbol=symbol,
+            name=info["name"],
+            sector=info["sector"],
+            current_price=info["current_price"],
+        )
+        return stockdetail.model_dump()
+    except Exception as e:
+        raise HTTPException(status_code=404,detail=str(e))
