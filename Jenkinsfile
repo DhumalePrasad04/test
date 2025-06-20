@@ -2,14 +2,14 @@ pipeline{
     agent any
     environment{
         dockerhubCred= credentials('docker-cred')
-        dockerImage= 'dhruvrs/stock-app:latest'
+        dockerImage= 'dockeruser428/stock-app'
     }
     stages{
         stage('Git Checkout'){
             steps{
                 git(
                     url: 'https://github.com/DhumalePrasad04/test.git',
-                    branch: 'main'  
+                    branch: 'develop'
                 )
             }
         }
