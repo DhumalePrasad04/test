@@ -13,7 +13,7 @@ spec:
           app: stock-app
       spec:
         containers:
-          - name: flask-app
-            image: dhruvrs/flask-app:latest
+          - name: stock-app
+            image: dhruvrs/stock-app:latest
             ports:
-              - containerPort: 5000
+              - containerPort: 8000
