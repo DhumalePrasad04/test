@@ -2,7 +2,7 @@ pipeline{
     agent any
     environment{
         dockerhubCred= credentials('docker-cred')
-        dockerImage= 'dockeruser428/stock-app'
+        dockerImage= 'dockeruser428/stock-app:latest'
     }
     stages{
         stage('Git Checkout'){
